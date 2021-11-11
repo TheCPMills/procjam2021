@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "procjam2021_e0ea9848"
+        },
+        {
+            "type": "java",
+            "name": "Launch GUI",
+            "request": "launch",
+            "vmArgs": "--module-path /Users/chasepmiller/Documents/Java/javafx-sdk-17.0.0.1/lib --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "GUI",
+            "projectName": "procjam2021_e0ea9848"
+        }
+    ]
+}

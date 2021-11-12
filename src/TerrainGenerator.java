@@ -12,17 +12,16 @@ public class TerrainGenerator {
     private static int WIDTH;
     private static int HEIGHT;
     private static double HEIGHT_VARIATION;
-    private static int REFERENCE_ROW;
     private static Color[][] REFERENCE_CAVE;
 
-    public static void generate(Noise referenceNoise, int width, int height, double heightVariation, int referenceRow) {
+    public static void generate(int seed, int width, int height, double heightVariation) {
         try {
-            init(referenceNoise, width, height, heightVariation, referenceRow);
+            init(seed, width, height, heightVariation);
             BufferedImage terrainGeneration = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
             // Generate terrain shape
             for (int i = 0; i < WIDTH; i++) {
-                int location = (HEIGHT / 2) + (int) ((((0x010101 * (int) ((REFERENCE_NOISE.getNoise(i, REFERENCE_ROW) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION) + 0.5) - ((int) (128 / HEIGHT_VARIATION));
+                int location = (HEIGHT / 2) + (int) ((((0x010101 * (int) ((REFERENCE_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION) + 0.5) - ((int) (128 / HEIGHT_VARIATION));
                 for (int j = 0; j < HEIGHT; j++) {
                     if (j > location) {
                         terrainGeneration.setRGB(i, j, 0x299432);
@@ -53,14 +52,13 @@ public class TerrainGenerator {
         }
     }
 
-    private static void init(Noise referenceNoise, int width, int height, double heightVariation, int referenceRow) throws IOException {
-        REFERENCE_NOISE = referenceNoise;
+    private static void init(int seed, int width, int height, double heightVariation) throws IOException {
+        REFERENCE_NOISE = new Simplex(seed);
         WIDTH = width;
         HEIGHT = height;
         HEIGHT_VARIATION = heightVariation;
-        REFERENCE_ROW = referenceRow;
 
-        Noise noise = new FBM(1234567890);
+        Noise noise = new FBM(seed);
         double low = -0.1;
         double high = 0;
 

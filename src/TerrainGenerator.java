@@ -45,7 +45,9 @@ public class TerrainGenerator {
                 }
             }
 
-            ImageIO.write(terrainGeneration, "png", new File("assets/2DTerrain.png"));
+            File outputFile = new File("assets/2DTerrain.png");
+            outputFile.getParentFile().mkdirs();
+            ImageIO.write(terrainGeneration, "png", outputFile);
         } catch (IOException ex) {
             System.out.println("Could not complete operation\n" + ex.getMessage());
         }
@@ -62,9 +64,6 @@ public class TerrainGenerator {
         double low = -0.1;
         double high = 0;
 
-        NoiseMapGenerator.generateMap(noise, width, height, "assets/cave-noise");
-        NoiseMapGenerator.generateMap(noise, 9, width, height, "assets/cave-levels");
-        NoiseMapGenerator.generateMap(noise, low, high, width, height, "assets/cave");
         REFERENCE_CAVE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(noise, low, high, width, height));
     }
 }

@@ -1,6 +1,8 @@
 import java.awt.image.*;
 import javax.imageio.*;
 import javanoise.noise.*;
+import javanoise.noise.fractal.*;
+
 import java.awt.*;
 import java.io.*;
 import java.util.*;
@@ -30,10 +32,9 @@ public class TerrainGenerator {
     private static int WOOD = 0xFF996633;
     private static int LEAVES = 0xFF339933;
 
-    public static void generate(Noise referenceNoise, Noise caveNoise, Noise stoneNoise, int width, int height,
-            double heightVariation, int referenceRow) {
+    public static void generate(int seed, int width, int height, double heightVariation) {
         try {
-            init(referenceNoise, caveNoise, stoneNoise, width, height, heightVariation, referenceRow);
+            init(seed, width, height, heightVariation);
             BufferedImage terrainGeneration = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
             // Generate terrain shape
@@ -76,21 +77,21 @@ public class TerrainGenerator {
         }
     }
 
-    private static void init(Noise referenceNoise, Noise caveNoise, Noise stoneNoise, int width, int height, double heightVariation, int referenceRow) throws IOException {
-        REFERENCE_NOISE = referenceNoise;
+    private static void init(int seed, int width, int height, double heightVariation) throws IOException {
+        REFERENCE_NOISE = new Simplex(seed);
         WIDTH = width;
         HEIGHT = height;
         HEIGHT_VARIATION = heightVariation;
-        STONE_NOISE = stoneNoise;
+        STONE_NOISE = new RigidMultiFractal(seed);
         RNG = new Random(0);
 
         double low = -0.1;
         double high = 0;
 
-        NoiseMapGenerator.generateMap(caveNoise, width, height, "assets/cave-noise");
-        NoiseMapGenerator.generateMap(caveNoise, 9, width, height, "assets/cave-levels");
-        NoiseMapGenerator.generateMap(caveNoise, low, high, width, height, "assets/cave");
-        REFERENCE_CAVE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(caveNoise, low, high, width, height));
+        NoiseMapGenerator.generateMap(new FBM(seed), width, height, "assets/cave-noise");
+        NoiseMapGenerator.generateMap(new FBM(seed), 9, width, height, "assets/cave-levels");
+        NoiseMapGenerator.generateMap(new FBM(seed), low, high, width, height, "assets/cave");
+        REFERENCE_CAVE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new FBM(seed), low, high, width, height));
     }
 
     private static void addTrees(BufferedImage terrainImage, ArrayList<Integer> locations){

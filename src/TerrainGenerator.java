@@ -18,6 +18,7 @@ public class TerrainGenerator {
     private static Color[][] REFERENCE_CAVE;
     private static ArrayList<Integer> locations = new ArrayList<Integer>();
     private static ArrayList<Integer> stoneLocations = new ArrayList<Integer>();
+    private static ArrayList<BiomeInfo> biomes = new ArrayList<BiomeInfo>();
 
     // Colors
     private static int SKY = 0xff9bd1ff;
@@ -35,6 +36,45 @@ public class TerrainGenerator {
     private static int WOOD = 0xff996633;
     private static int LEAVES = 0xff339933;
 
+    private enum BiomeType {FOREST, OCEAN, DESERT, MOUNTAIN};
+    private static class BiomeInfo {
+        public BiomeType primaryType = null;
+        public float proportion; // 0 never happens, 1 is primary only
+        public BiomeType secondaryType = null;
+
+        public void addBiome(BiomeType biome, float proportion){
+            if (primaryType == null){
+                this.primaryType = biome;
+                this.proportion = proportion;
+            }
+            else if (secondaryType == null){
+                this.secondaryType = biome;
+            }
+        }
+
+        public double getBiomeHeight(float baseHeight, float maxDeviation){
+            float primaryHeight = baseHeight;
+            float secondaryHeight = baseHeight;
+
+            switch(primaryType){
+                case OCEAN: primaryHeight += maxDeviation; break;
+                case MOUNTAIN: primaryHeight -= maxDeviation; break;
+                default:
+            }
+            if (secondaryType != null){
+                switch(secondaryType){
+                    case OCEAN: secondaryHeight += maxDeviation; break;
+                    case MOUNTAIN: secondaryHeight -= maxDeviation; break;
+                    default:
+                }
+            }
+            // still 0 to 1, but smoothed
+            float trigonometricProportion = -0.5f * (float)Math.cos(proportion * Math.PI) + 0.5f;
+
+            return (primaryHeight - secondaryHeight) * trigonometricProportion + secondaryHeight;
+        }
+    }
+
     public static void generate(int seed, int width, int height, double heightVariation) {
         try {
             init(seed, width, height, heightVariation);
@@ -44,10 +84,15 @@ public class TerrainGenerator {
             double surfaceReference = (HEIGHT * 0.2);
             double undergroundReference = (HEIGHT * 0.225);
 
+            // Generate Biome values
+            biomes = generateBiomes();
+
             // Generate terrain shape
             for (int i = 0; i < WIDTH; i++) {
-                int location = (int) (surfaceReference + (int) ((((0x010101 * (int) ((REFERENCE_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION) + 0.5) - ((int) (128 / HEIGHT_VARIATION)));
-                int stoneLocation = (int) (undergroundReference + (int) ((((0x010101 * (int) ((STONE_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION * 2) + 0.5) - ((int) (256 / HEIGHT_VARIATION)));
+                double baseHeight = biomes.get(i).getBiomeHeight((float)surfaceReference, (float)surfaceReference / 2);
+                double baseUnderground = baseHeight + undergroundReference - surfaceReference;
+                int location = (int) (baseHeight + (int) ((((0x010101 * (int) ((REFERENCE_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION) + 0.5) - ((int) (128 / HEIGHT_VARIATION)));
+                int stoneLocation = (int) (baseUnderground + (int) ((((0x010101 * (int) ((STONE_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION * 2) + 0.5) - ((int) (256 / HEIGHT_VARIATION)));
                 locations.add(location);
                 stoneLocations.add(stoneLocation);
                 for (int j = 0; j < HEIGHT; j++) {
@@ -90,14 +135,11 @@ public class TerrainGenerator {
         HEIGHT = height;
         HEIGHT_VARIATION = heightVariation;
         STONE_NOISE = new RigidMultiFractal(seed);
-        RNG = new Random(0);
+        RNG = new Random(seed);
 
         double low = -0.1;
         double high = 0;
 
-        NoiseMapGenerator.generateMap(new FBM(seed), width, height, "assets/cave-noise");
-        NoiseMapGenerator.generateMap(new FBM(seed), 9, width, height, "assets/cave-levels");
-        NoiseMapGenerator.generateMap(new FBM(seed), low, high, width, height, "assets/cave");
         REFERENCE_CAVE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new FBM(seed), low, high, width, height));
     }
 
@@ -112,7 +154,7 @@ public class TerrainGenerator {
     }
 
     private static boolean validTreeSpace(BufferedImage terrainImage, int x, int y){
-        if (x < 1 || y < 10 || x > WIDTH - 2 || terrainImage.getRGB(x, y) != GRASS){
+        if (x < 1 || y < 10 || x > WIDTH - 2 || y > HEIGHT - 1 || terrainImage.getRGB(x, y) != GRASS){
             return false;
         }
         for(int i = -1; i <= 1; i++){
@@ -139,6 +181,42 @@ public class TerrainGenerator {
                 terrainImage.setRGB(x + 1, y - i, LEAVES);
             }
         }
+    }
+
+    private static ArrayList<BiomeInfo> generateBiomes(){
+        ArrayList<BiomeInfo> biomeInfo = new ArrayList<BiomeInfo>();
+
+        int mountainXmin = RNG.nextInt(WIDTH * 3/4) + WIDTH / 8;
+        int mountainWidth = RNG.nextInt(WIDTH / 16) + WIDTH / 16;
+        int mountainXmax = mountainWidth + mountainXmin;
+        float mountainMid = (float)(mountainXmax + mountainXmin) / 2;
+        int leftOceanmax = RNG.nextInt(WIDTH / 16) + WIDTH / 16;
+        int rightOceanmin = RNG.nextInt(WIDTH / 16) + WIDTH * 15/16;
+
+        // initialize and add oceans
+        for (int i = 0; i < WIDTH; i++){
+            biomeInfo.add(new BiomeInfo());
+            if (i <= leftOceanmax){
+                biomeInfo.get(i).addBiome(BiomeType.OCEAN, (1.0f - (float)i / leftOceanmax));
+            }
+            else if (i >= rightOceanmin){
+                biomeInfo.get(i).addBiome(BiomeType.OCEAN, (float)(i - rightOceanmin) / (WIDTH - rightOceanmin));
+            }
+        }
+
+        // add mountain
+        for (int i = 0; i < WIDTH; i++){
+            if (i >= mountainXmin && i <= mountainXmax){
+                biomeInfo.get(i).addBiome(BiomeType.MOUNTAIN, 1.0f - (float)(Math.abs(mountainMid - i)) / mountainWidth * 2);
+            }
+        }
+
+        // add forests
+        for (int i = 0; i < WIDTH; i++){
+            biomeInfo.get(i).addBiome(BiomeType.FOREST, 1);
+        }
+
+        return biomeInfo;
     }
 
     @SuppressWarnings("unused")

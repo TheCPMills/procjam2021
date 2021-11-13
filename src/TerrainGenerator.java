@@ -18,28 +18,34 @@ public class TerrainGenerator {
     private static ArrayList<Integer> stoneLocations = new ArrayList<Integer>();
 
     // Colors
-    private static int GRASS = 0xFF299432;
-    private static int DIRT = 0xFF60301a;
-    private static int STONE = 0xFF7a7a7a;
-    private static int WATER = 0xFF0020FE;
-    private static int LAVA = 0xFF0020FE;
-    private static int SAND = 0xFFFEDF00;
-    private static int SNOW = 0xFF0020FE;
-    private static int JUNGLE = 0xFF0020FE;
-    private static int SKY = 0xFF6fb5d8;
-    private static int WOOD = 0xFF996633;
-    private static int LEAVES = 0xFF339933;
+    private static int SKY = 0xff9bd1ff;
+    private static int CLOUD = 0xffdfffff;
+    private static int GRASS = 0xff2ac073;
+    private static int DIRT = 0xff976b4b;
+    private static int MOSS = 0xff35501e;
+    private static int MUD = 0xff5c4449;
+    private static int SAND = 0xffbeab5e;
+    private static int SNOW = 0xffd3ecf1;
+    private static int STONE = 0xff808080;
+    private static int WATER = 0xff415897;
+    private static int LAVA = 0xff8a4926;
+    private static int CAVE = 0xff121223;
+    private static int WOOD = 0xff996633;
+    private static int LEAVES = 0xff339933;
 
-    public static void generate(Noise referenceNoise, Noise caveNoise, Noise stoneNoise, int width, int height,
-            double heightVariation, int referenceRow) {
+    public static void generate(Noise referenceNoise, Noise caveNoise, Noise stoneNoise, int width, int height, double heightVariation, int referenceRow) {
         try {
             init(referenceNoise, caveNoise, stoneNoise, width, height, heightVariation, referenceRow);
             BufferedImage terrainGeneration = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
+            // Initialize reference points
+            double surfaceReference = (HEIGHT * 0.2);
+            double undergroundReference = (HEIGHT * 0.225);
+
             // Generate terrain shape
             for (int i = 0; i < WIDTH; i++) {
-                int location = (int) ((HEIGHT * 0.2) + (int) ((((0x010101 * (int) ((REFERENCE_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION) + 0.5) - ((int) (128 / HEIGHT_VARIATION)));
-                int stoneLocation = (int) ((HEIGHT * 0.25) + (int) ((((0x010101 * (int) ((STONE_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION * 2) + 0.5) - ((int) (256 / HEIGHT_VARIATION)));
+                int location = (int) (surfaceReference + (int) ((((0x010101 * (int) ((REFERENCE_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION) + 0.5) - ((int) (128 / HEIGHT_VARIATION)));
+                int stoneLocation = (int) (undergroundReference + (int) ((((0x010101 * (int) ((STONE_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION * 2) + 0.5) - ((int) (256 / HEIGHT_VARIATION)));
                 locations.add(location);
                 stoneLocations.add(stoneLocation);
                 for (int j = 0; j < HEIGHT; j++) {
@@ -61,7 +67,7 @@ public class TerrainGenerator {
             for (int col = 0; col < WIDTH; col++) {
                 for (int row = 0; row < HEIGHT; row++) {
                     if (pixelColors[col][row] == 0xFFFFFFFF && locations.get(col) <= row) {
-                        terrainGeneration.setRGB(col, row, 0);
+                        terrainGeneration.setRGB(col, row, CAVE);
                     }
                 }
             }
@@ -131,5 +137,25 @@ public class TerrainGenerator {
                 terrainImage.setRGB(x + 1, y - i, LEAVES);
             }
         }
+    }
+
+    @SuppressWarnings("unused")
+    private static void generateSky() {
+        // TODO: Implement sky generation
+    }
+
+    @SuppressWarnings("unused")
+    private static void generateSurface() {
+        // TODO: Generate surface
+    }
+
+    @SuppressWarnings("unused")
+    private static void generateUnderground() {
+        // TODO: Generate underground
+    }
+
+    @SuppressWarnings("unused")
+    private static void generateCaverns() {
+        // TODO: Generate caverns
     }
 }

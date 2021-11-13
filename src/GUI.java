@@ -75,7 +75,6 @@ public class GUI extends Application {
                     try {
                         App.main(null);
                     } catch (Exception e2) {
-                        // TODO Auto-generated catch block
                         e2.printStackTrace();
                     }
                     try {

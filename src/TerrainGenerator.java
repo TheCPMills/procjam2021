@@ -99,9 +99,15 @@ public class TerrainGenerator {
                     if (j >= stoneLocation) {
                         terrainGeneration.setRGB(i, j, STONE);
                     } else if (j > location && j < stoneLocation) {
-                        terrainGeneration.setRGB(i, j, DIRT);
+                        if (biomes.get(i).primaryType == BiomeType.OCEAN && RNG.nextFloat() < Math.min(biomes.get(i).proportion * 3, 0.95)) {
+                            terrainGeneration.setRGB(i, j, SAND);
+                        } else {
+                            terrainGeneration.setRGB(i, j, DIRT);
+                        }
                     } else if (j == location) {
                         terrainGeneration.setRGB(i, j, GRASS);
+                    } else if (biomes.get(i).primaryType == BiomeType.OCEAN && j < location && j >= surfaceReference) {
+                        terrainGeneration.setRGB(i, j, WATER);
                     } else if (j < location) {
                         terrainGeneration.setRGB(i, j, SKY);
                     }
@@ -191,7 +197,7 @@ public class TerrainGenerator {
         int mountainXmax = mountainWidth + mountainXmin;
         float mountainMid = (float)(mountainXmax + mountainXmin) / 2;
         int leftOceanmax = RNG.nextInt(WIDTH / 16) + WIDTH / 16;
-        int rightOceanmin = RNG.nextInt(WIDTH / 16) + WIDTH * 15/16;
+        int rightOceanmin = RNG.nextInt(WIDTH / 16) + WIDTH * 7/8;
 
         // initialize and add oceans
         for (int i = 0; i < WIDTH; i++){

@@ -1,5 +1,7 @@
 import java.awt.image.*;
 import javax.imageio.*;
+
+import Biomes.*;
 import javanoise.noise.*;
 import javanoise.noise.fractal.*;
 import javanoise.random.*;
@@ -120,18 +122,18 @@ public class TerrainGenerator {
      * mud, moss, and mahogany trees Savanna - tropical grass and acacia trees
      * Desert - sand, clay, and cacti Ocean - sand, water, and palm tees
      */
-    private enum BiomeType {TUNDRA, MOUNTAIN, TAIGA, GRASSLANDS, FOREST, JUNGLE, SAVANNA, DESERT, OCEAN};
+    //private enum BiomeType {TUNDRA, MOUNTAIN, TAIGA, GRASSLANDS, FOREST, JUNGLE, SAVANNA, DESERT, OCEAN};
     private static class BiomeInfo {
-        public BiomeType primaryType = null;
+        public Biome primaryBiome = null;
         public float proportion; // 0 never happens, 1 is primary only
-        public BiomeType secondaryType = null;
+        public Biome secondaryBiome = null;
 
-        public void addBiome(BiomeType biome, float proportion) {
-            if (primaryType == null) {
-                this.primaryType = biome;
+        public void addBiome(Biome biome, float proportion) {
+            if (primaryBiome == null) {
+                this.primaryBiome = biome;
                 this.proportion = proportion;
-            } else if (secondaryType == null) {
-                this.secondaryType = biome;
+            } else if (secondaryBiome == null) {
+                this.secondaryBiome = biome;
             }
         }
 
@@ -139,25 +141,9 @@ public class TerrainGenerator {
             float primaryHeight = baseHeight;
             float secondaryHeight = baseHeight;
 
-            switch (primaryType) {
-            case OCEAN:
-                primaryHeight += maxDeviation;
-                break;
-            case MOUNTAIN:
-                primaryHeight -= maxDeviation;
-                break;
-            default:
-            }
-            if (secondaryType != null) {
-                switch (secondaryType) {
-                case OCEAN:
-                    secondaryHeight += maxDeviation;
-                    break;
-                case MOUNTAIN:
-                    secondaryHeight -= maxDeviation;
-                    break;
-                default:
-                }
+            primaryHeight += primaryBiome.getHeight() * maxDeviation;
+            if (secondaryBiome != null) {
+                secondaryHeight += secondaryBiome.getHeight() * maxDeviation;
             }
             // still 0 to 1, but smoothed
             float trigonometricProportion = -0.5f * (float) Math.cos(proportion * Math.PI) + 0.5f;
@@ -208,7 +194,7 @@ public class TerrainGenerator {
                     } else if (j >= soilLocation && j < mineralLocation) {
                         TERRAIN_IMAGE.setRGB(i, j, DIRT);
                     } else if (j >= lushLocation && j < soilLocation) {
-                        if (biomes.get(i).primaryType == BiomeType.OCEAN && BIOME_RNG.nextDouble() < Math.min(0.95, biomes.get(i).proportion * 5)) {
+                        if (biomes.get(i).primaryBiome instanceof Ocean && BIOME_RNG.nextDouble() < Math.min(0.95, biomes.get(i).proportion * 5)) {
                             TERRAIN_IMAGE.setRGB(i, j, SAND);
                         } else {
                             TERRAIN_IMAGE.setRGB(i, j, GRASS);
@@ -248,7 +234,7 @@ public class TerrainGenerator {
 
         double low = -0.1;
         double high = 0;
-        CAVE_REFERENCE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new FBM(seed), low, high, width, height));
+        CAVE_REFERENCE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new FBM(seed, 0.02, 2), low, high, width, height));
 
         int mineralLevels = 8;
         MINERAL_REFERENCE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new Perlin(seed), mineralLevels, width, height));
@@ -310,23 +296,23 @@ public class TerrainGenerator {
         for (int i = 0; i < WIDTH; i++) {
             biomeInfo.add(new BiomeInfo());
             if (i <= leftOceanmax) {
-                biomeInfo.get(i).addBiome(BiomeType.OCEAN, (1.0f - (float) i / leftOceanmax));
+                biomeInfo.get(i).addBiome(Ocean.getInstance(), (1.0f - (float) i / leftOceanmax));
             } else if (i >= rightOceanmin) {
-                biomeInfo.get(i).addBiome(BiomeType.OCEAN, (float) (i - rightOceanmin) / (WIDTH - rightOceanmin));
+                biomeInfo.get(i).addBiome(Ocean.getInstance(), (float) (i - rightOceanmin) / (WIDTH - rightOceanmin));
             }
         }
 
         // add mountain
         for (int i = 0; i < WIDTH; i++) {
             if (i >= mountainXmin && i <= mountainXmax) {
-                biomeInfo.get(i).addBiome(BiomeType.MOUNTAIN,
+                biomeInfo.get(i).addBiome(Mountain.getInstance(),
                         1.0f - (float) (Math.abs(mountainMid - i)) / mountainWidth * 2);
             }
         }
 
         // add forests
         for (int i = 0; i < WIDTH; i++) {
-            biomeInfo.get(i).addBiome(BiomeType.FOREST, 1);
+            biomeInfo.get(i).addBiome(Forest.getInstance(), 1);
         }
 
         return biomeInfo;

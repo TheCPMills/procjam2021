@@ -10,4 +10,10 @@ public final class Forest extends Biome {
         
         return INSTANCE;
     }
+
+    private static int GRASS = 0xff2ac073;
+
+    public int getLushColor() {
+        return GRASS;
+    }
 }

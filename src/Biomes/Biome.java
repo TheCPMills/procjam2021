@@ -1,14 +1,20 @@
 package Biomes;
 
-public class Biome {
-    private static Biome INSTANCE;
+public abstract class Biome {
     
-    public static Biome getInstance() {
-        if(INSTANCE == null) {
-            INSTANCE = new Biome();
+    public abstract int getLushColor();
+
+    public int getLushColor(float randomVal, float proportion, Biome secondaryBiome) {
+        return getLushColor(randomVal < proportion, secondaryBiome);
+    }
+
+    public int getLushColor(Boolean isPrimary, Biome secondaryBiome) {
+        if (secondaryBiome == null || isPrimary) {
+            return getLushColor();
         }
-        
-        return INSTANCE;
+        else {
+            return secondaryBiome.getLushColor();
+        }
     }
 
     public float getHeight() {

@@ -11,6 +11,12 @@ public final class Mountain extends Biome{
         return INSTANCE;
     }
 
+    private static int GRASS = 0xff2ac073;
+
+    public int getLushColor() {
+        return GRASS;
+    }
+
     @Override
     public float getHeight() {
         return -1;

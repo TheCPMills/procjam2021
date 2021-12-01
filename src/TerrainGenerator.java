@@ -61,7 +61,7 @@ public class TerrainGenerator {
     private static int PINE_WOOD = 0;
     private static int PINE_LEAVES = 0;
 
-    // Aquatic Colors
+    // Ocean/Water Colors
     private static int WATER = 0xff0099ff;
     private static int CORAL = 0;
     private static int PALM_WOOD = 0;
@@ -115,43 +115,6 @@ public class TerrainGenerator {
     private static int LAVA = 0xff8a4926;
     private static int CAVE = 0xff121223;
 
-    // Biome Info
-    /**
-     * Tundra - snow and ice Taiga - snowy grass and boreal trees Mountain - stone
-     * and gravel Grassland - grass and shrubs Forest - grass and oak trees Jungle -
-     * mud, moss, and mahogany trees Savanna - tropical grass and acacia trees
-     * Desert - sand, clay, and cacti Ocean - sand, water, and palm tees
-     */
-    //private enum BiomeType {TUNDRA, MOUNTAIN, TAIGA, GRASSLANDS, FOREST, JUNGLE, SAVANNA, DESERT, OCEAN};
-    private static class BiomeInfo {
-        public Biome primaryBiome = null;
-        public float proportion; // 0 never happens, 1 is primary only
-        public Biome secondaryBiome = null;
-
-        public void addBiome(Biome biome, float proportion) {
-            if (primaryBiome == null) {
-                this.primaryBiome = biome;
-                this.proportion = proportion;
-            } else if (secondaryBiome == null) {
-                this.secondaryBiome = biome;
-            }
-        }
-
-        public double getBiomeHeight(float baseHeight, float maxDeviation) {
-            float primaryHeight = baseHeight;
-            float secondaryHeight = baseHeight;
-
-            primaryHeight += primaryBiome.getHeight() * maxDeviation;
-            if (secondaryBiome != null) {
-                secondaryHeight += secondaryBiome.getHeight() * maxDeviation;
-            }
-            // still 0 to 1, but smoothed
-            float trigonometricProportion = -0.5f * (float) Math.cos(proportion * Math.PI) + 0.5f;
-
-            return (primaryHeight - secondaryHeight) * trigonometricProportion + secondaryHeight;
-        }
-    }
-
     /*******************************************
      ***************** METHODS *****************
      *******************************************/
@@ -169,7 +132,7 @@ public class TerrainGenerator {
             double soilReference = lushReference / lushToSoilRatio;
             double mineralReference = soilReference / soilToMineralRatio;
 
-            double seaLevel = lushReference;
+            double seaLevel = lushReference * 1.05;
 
             // Generate Biome values
             biomes = generateBiomes();
@@ -194,11 +157,7 @@ public class TerrainGenerator {
                     } else if (j >= soilLocation && j < mineralLocation) {
                         TERRAIN_IMAGE.setRGB(i, j, DIRT);
                     } else if (j >= lushLocation && j < soilLocation) {
-                        if (biomes.get(i).primaryBiome instanceof Ocean && BIOME_RNG.nextDouble() < Math.min(0.95, biomes.get(i).proportion * 5)) {
-                            TERRAIN_IMAGE.setRGB(i, j, SAND);
-                        } else {
-                            TERRAIN_IMAGE.setRGB(i, j, GRASS);
-                        }
+                        TERRAIN_IMAGE.setRGB(i, j, biomes.get(i).getLushColor());
                     } else if (j >= seaLevel && j < lushLocation) {
                         TERRAIN_IMAGE.setRGB(i, j, WATER);
                     } else if (j < lushLocation) {
@@ -294,7 +253,7 @@ public class TerrainGenerator {
 
         // initialize and add oceans
         for (int i = 0; i < WIDTH; i++) {
-            biomeInfo.add(new BiomeInfo());
+            biomeInfo.add(new BiomeInfo(BIOME_RNG));
             if (i <= leftOceanmax) {
                 biomeInfo.get(i).addBiome(Ocean.getInstance(), (1.0f - (float) i / leftOceanmax));
             } else if (i >= rightOceanmin) {

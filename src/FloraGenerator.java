@@ -12,23 +12,23 @@ public class FloraGenerator {
         FLORA_RNG = new LCG(seed);
     }
 
-    public void addTrees(Block[][] terrainData, ArrayList<Integer> locations) {
+    public void addTrees(Tile[][] terrainData, ArrayList<Integer> locations) {
         for (int i = 0; i < WIDTH; i += 2) {
             int location = locations.get(i);
             double rVal = FLORA_RNG.next(0, 1);
-            if (rVal < 0.1 && validTreeSpace(terrainData, i, location)) {
-                putTree(terrainData, i, location);
+            if (rVal < 0.25 && validTreeSpace(terrainData, i, location)) {
+                putTree(terrainData, i, location - 1);
             }
         }
     }
 
-    public boolean validTreeSpace(Block[][] terrainData, int x, int y) {
-        if (x < 1 || y < 10 || x > WIDTH - 2 || Block.getBlockType(terrainData[x][y]) != 0) {
+    public boolean validTreeSpace(Tile[][] terrainData, int x, int y) {
+        if (x < 2 || y < 32 || x > WIDTH - 3 || terrainData[x][y].block().getBlockType() != 0 || terrainData[x + 1][y].block().getBlockType() != 0) {
             return false;
         }
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j >= -10; j--) {
-                int blockType = Block.getBlockType(terrainData[x + i][y + j]);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -1; j >= -32; j--) {
+                int blockType = terrainData[x + i][y + j].block().getBlockType();
                 if (blockType != -1) { // not sky and not empty
                     return false; // should be false
                 }
@@ -37,17 +37,17 @@ public class FloraGenerator {
         return true;
     }
 
-    public void putTree(Block[][] terrainData, int x, int y) {
-        int flip = (int) (FLORA_RNG.next(0, 1) + 0.5);
-        for (int i = 1; i <= 10; i++) {
-            if (i < 8) {
-                terrainData[x][y - i] = Block.OAK_WOOD;
-                terrainData[x + ((i + flip) % 2) * 2 - 1][y - i] = Block.OAK_LEAVES;
-            } else {
-                terrainData[x - 1][y - i] = Block.OAK_LEAVES;
-                terrainData[x][y - i] = Block.OAK_LEAVES;
-                terrainData[x + 1][y - i] = Block.OAK_LEAVES;
-            }
-        }
+    public void putTree(Tile[][] terrainData, int x, int y) {
+        int flipped = (int) (FLORA_RNG.next(0, 1) + 0.5);
+
+        terrainData[x][y - 3] = new FaunaTile(Block.OAK_TREE, flipped == 1, TileAlignment.LEFT_SUPER);
+        terrainData[x][y - 2] = new FaunaTile(Block.OAK_TREE, flipped == 1, TileAlignment.LEFT_MID);
+        terrainData[x][y - 1] = new FaunaTile(Block.OAK_TREE, flipped == 1, TileAlignment.LEFT_BASE);
+        terrainData[x][y] = new FaunaTile(Block.OAK_TREE, flipped == 1, TileAlignment.LEFT_SUB);
+
+        terrainData[x + 1][y - 3] = new FaunaTile(Block.OAK_TREE, flipped == 1, TileAlignment.RIGHT_SUPER);
+        terrainData[x + 1][y - 2] = new FaunaTile(Block.OAK_TREE, flipped == 1, TileAlignment.RIGHT_MID);
+        terrainData[x + 1][y - 1] = new FaunaTile(Block.OAK_TREE, flipped == 1, TileAlignment.RIGHT_BASE);
+        terrainData[x + 1][y] = new FaunaTile(Block.OAK_TREE, flipped == 1, TileAlignment.RIGHT_SUB);
     }
 }

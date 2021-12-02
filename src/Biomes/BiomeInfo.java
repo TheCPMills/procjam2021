@@ -1,6 +1,5 @@
 package Biomes;
-
-import java.util.Random;
+import javanoise.random.*;
 
 // Biome Info
 /**
@@ -11,13 +10,13 @@ import java.util.Random;
  */
 //private enum BiomeType {TUNDRA, MOUNTAIN, TAIGA, GRASSLANDS, FOREST, JUNGLE, SAVANNA, DESERT, OCEAN};
 public class BiomeInfo {
-    private Random RNG;
+    private RNG RNG;
 
     public Biome primaryBiome = null;
     public float proportion; // 0 never happens, 1 is primary only
     public Biome secondaryBiome = null;
 
-    public BiomeInfo(Random RNG) {
+    public BiomeInfo(RNG RNG) {
         this.RNG = RNG;
     }
 
@@ -45,7 +44,7 @@ public class BiomeInfo {
     }
 
     public int getLushColor(){
-        float randomVal = RNG.nextFloat();
+        float randomVal = (float) RNG.next();
         return primaryBiome.getLushColor(randomVal, proportion, secondaryBiome);
     }
 }

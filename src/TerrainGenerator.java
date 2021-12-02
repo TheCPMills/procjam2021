@@ -125,10 +125,10 @@ public class TerrainGenerator {
 
             // Initialize reference points
 
-            double lushToSoilRatio = 0.85;
-            double soilToMineralRatio = 0.95;
+            double lushToSoilRatio = 1.25;
+            double soilToMineralRatio = 0.75;
 
-            double lushReference = (HEIGHT * 0.25);
+            double lushReference = (HEIGHT * 0.35);
             double soilReference = lushReference / lushToSoilRatio;
             double mineralReference = soilReference / soilToMineralRatio;
 
@@ -155,7 +155,7 @@ public class TerrainGenerator {
                     if (j >= mineralLocation) {
                         generateMinerals(i, j);
                     } else if (j >= soilLocation && j < mineralLocation) {
-                        TERRAIN_IMAGE.setRGB(i, j, DIRT);
+                        TERRAIN_IMAGE.setRGB(i, j, biomes.get(i).getSoilColor());
                     } else if (j >= lushLocation && j < soilLocation) {
                         TERRAIN_IMAGE.setRGB(i, j, biomes.get(i).getLushColor());
                     } else if (j >= seaLevel && j < lushLocation) {
@@ -185,18 +185,18 @@ public class TerrainGenerator {
         HEIGHT = height;
         HEIGHT_VARIATION = heightVariation;
         LUSH_NOISE = new Simplex(seed);
-        SOIL_NOISE = new Simplex((int) (seed * 1.0001));
+        SOIL_NOISE = new Simplex((int) seed);
         MINERAL_NOISE = new RigidMultiFractal(seed);
         TREE_RNG = new LCG(seed);
         CLOUD_RNG = new XORShift(seed);
         BIOME_RNG = new CBSquares(seed);
 
-        double low = -0.1;
-        double high = 0;
-        CAVE_REFERENCE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new FBM(seed, 0.02, 2), low, high, width, height));
+        double low = -0.025;
+        double high = 0.025;
+        CAVE_REFERENCE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new FBM(seed), low, high, width, height));
 
         int mineralLevels = 8;
-        MINERAL_REFERENCE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new Perlin(seed), mineralLevels, width, height));
+        MINERAL_REFERENCE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new Perlin(seed, 0.05), mineralLevels, width, height));
 
         int levels = 14 * 10 + 1; // 14 possible ores/gems each with a 10% chance of showing up
         ORE_AND_GEM_REFERENCE = ImageProcessing.arrayPixels(NoiseMapGenerator.generate(new Cellular(seed), levels, width, height));
@@ -206,18 +206,18 @@ public class TerrainGenerator {
         for (int i = 0; i < WIDTH; i++) {
             int location = locations.get(i);
             double rVal = TREE_RNG.next(0, 1);
-            if (rVal < 0.35 && validTreeSpace(terrainImage, i, location)) {
+            if (rVal < 0.25 && validTreeSpace(terrainImage, i, location)) {
                 putTree(terrainImage, i, location);
             }
         }
     }
 
     private static boolean validTreeSpace(BufferedImage terrainImage, int x, int y) {
-        if (x < 1 || y < 10 || x > WIDTH - 2 || terrainImage.getRGB(x, y) != GRASS) {
+        if (x < 2 || y < 32 || x > WIDTH - 3 || terrainImage.getRGB(x, y) != GRASS || terrainImage.getRGB(x + 1, y) != GRASS) {
             return false;
         }
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j >= -10; j--) {
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -1; j >= -32; j--) {
                 int color = terrainImage.getRGB(x + i, y + j);
                 if (color != SKY && color != 0) {
                     return false;
@@ -284,34 +284,32 @@ public class TerrainGenerator {
     private static void generateMinerals(int column, int row) {
         int mineral;
         switch (MINERAL_REFERENCE[column][row].getRed()) {
-        case 0:
-            mineral = COBBLESTONE;
-            break;
-        case 34:
-            mineral = MARBLE;
-            break;
-        case 73:
-            mineral = GRANITE;
-            break;
-        case 109:
-            mineral = DIORTIE;
-            break;
-        case 145:
-            mineral = ANDESITE;
-            break;
-        case 182:
-            mineral = LIMESTONE;
-            break;
-        case 218:
-            mineral = BASALT;
-            break;
-        case 255:
-            mineral = PUMICE;
-            break;
-        default:
-            mineral = 0xffffffff;
-            break;
-        }
+            default:
+            case 0:
+                mineral = DIORTIE;
+                break;
+            case 34:
+                mineral = MARBLE;
+                break;
+            case 73:
+                mineral = GRANITE;
+                break;
+            case 109:
+                mineral = COBBLESTONE;
+                break;
+            case 145:
+                mineral = ANDESITE;
+                break;
+            case 182:
+                mineral = BASALT;
+                break;
+            case 218:
+                mineral = LIMESTONE;
+                break;
+            case 255:
+                mineral = PUMICE;
+                break;
+            }
         TERRAIN_IMAGE.setRGB(column, row, mineral);
     }
 

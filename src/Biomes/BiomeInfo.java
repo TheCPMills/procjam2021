@@ -47,4 +47,9 @@ public class BiomeInfo {
         float randomVal = (float) RNG.next();
         return primaryBiome.getLushColor(randomVal, proportion, secondaryBiome);
     }
+
+    public int getSoilColor() {
+        float randomVal = (float) RNG.next();
+        return primaryBiome.getSoilColor(randomVal, proportion, secondaryBiome);
+    }
 }

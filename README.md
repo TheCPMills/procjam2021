@@ -2,11 +2,11 @@
 TGen is a Java library for generating terrain.
 
 ## Biomes
-|  | Lush | Soil | Minerals | Vegetation |
+|  | Lush Groundcover | Soil | Minerals | Vegetation |
 |-----|-----|-----|-----|-----|
-| <b>Tundra<b> | Snow | Snow | Ice | Juniper Savin, Bell Flower |
+| <b>Tundra<b> | Snow | Snow | Ice | Juniper Savin, Azure Bluet |
 | <b>Taiga<b> | Frosted Grass | Dirt |  | Boreal Tree, Barberry |
-| <b>Alpine<b> | Gravel | Gravel |  | Asphodel, Iris |
+| <b>Alpine<b> | Gravel | Gravel |  | Asphodel, Iris, Bell Flower |
 | <b>Grassland<b> | Temperate Grass | Dirt |  | Switch Grass, Daffodil |
 | <b>Forest<b> | Grass |  | Dirt | Oak Tree, Poppy |
 | <b>Jungle<b> | Tropical Grass | Mud |  | Mahogany Tree, Mushroom |

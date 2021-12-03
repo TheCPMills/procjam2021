@@ -20,7 +20,7 @@ public class TerrainGenerator {
     private static double HEIGHT_VARIATION;
 
     // Features RNGs
-    private static RNG BIOME_RNG;
+    private static Random BIOME_RNG;
     private static RNG TREE_RNG;
     private static RNG CLOUD_RNG;
 
@@ -189,7 +189,7 @@ public class TerrainGenerator {
         MINERAL_NOISE = new RigidMultiFractal(seed);
         TREE_RNG = new LCG(seed);
         CLOUD_RNG = new XORShift(seed);
-        BIOME_RNG = new CBSquares(seed);
+        BIOME_RNG = new Random(seed);
 
         double low = -0.025;
         double high = 0.025;
@@ -244,12 +244,12 @@ public class TerrainGenerator {
     private static ArrayList<BiomeInfo> generateBiomes() {
         ArrayList<BiomeInfo> biomeInfo = new ArrayList<BiomeInfo>();
 
-        int mountainXmin = (int)(BIOME_RNG.next(WIDTH * 3 / 4)) + WIDTH / 8;
-        int mountainWidth = (int)(BIOME_RNG.next(WIDTH / 16)) + WIDTH / 16;
+        int mountainXmin = (int)(BIOME_RNG.nextDouble(WIDTH * 3 / 4)) + WIDTH / 8;
+        int mountainWidth = (int)(BIOME_RNG.nextDouble(WIDTH / 16)) + WIDTH / 16;
         int mountainXmax = mountainWidth + mountainXmin;
         float mountainMid = (float) (mountainXmax + mountainXmin) / 2;
-        int leftOceanmax = (int)(BIOME_RNG.next(WIDTH / 16)) + WIDTH / 16;
-        int rightOceanmin = (int)(BIOME_RNG.next(WIDTH / 16)) + WIDTH * 7 / 8;
+        int leftOceanmax = (int)(BIOME_RNG.nextDouble(WIDTH / 16)) + WIDTH / 16;
+        int rightOceanmin = (int)(BIOME_RNG.nextDouble(WIDTH / 16)) + WIDTH * 7 / 8;
 
         // initialize and add oceans
         for (int i = 0; i < WIDTH; i++) {

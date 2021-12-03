@@ -1,4 +1,7 @@
-package biomes;
+package util.biomes;
+import util.*;
+import util.block.Block;
+
 public final class Mountain extends Biome {
     private static Mountain INSTANCE;
 
@@ -10,15 +13,12 @@ public final class Mountain extends Biome {
         return INSTANCE;
     }
 
-    private static int GRASS = 0xff2ac073;
-    private static int DIRT = 0xff976b4b;
-
-    public int getLush() {
-        return GRASS;
+    public Block getLush() {
+        return Block.GRAVEL;
     }
 
-    public int getSoil() {
-        return DIRT;
+    public Block getSoil() {
+        return Block.GRAVEL;
     }
 
     @Override

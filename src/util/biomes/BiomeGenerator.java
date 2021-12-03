@@ -1,4 +1,4 @@
-package biomes;
+package util.biomes;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,12 +17,12 @@ public class BiomeGenerator {
     public ArrayList<BiomeInfo> generateBiomes() {
         ArrayList<BiomeInfo> biomeInfo = new ArrayList<BiomeInfo>();
 
-        int mountainXmin = (int) (BIOME_RNG.nextDouble(WIDTH * 3 / 4)) + WIDTH / 8;
-        int mountainWidth = (int) (BIOME_RNG.nextDouble(WIDTH / 16)) + WIDTH / 16;
+        int mountainXmin = (int) (BIOME_RNG.nextInt(WIDTH * 3 / 4)) + WIDTH / 8;
+        int mountainWidth = (int) (BIOME_RNG.nextInt(WIDTH / 16)) + WIDTH / 16;
         int mountainXmax = mountainWidth + mountainXmin;
         float mountainMid = (float) (mountainXmax + mountainXmin) / 2;
-        int leftOceanmax = (int) (BIOME_RNG.nextDouble(WIDTH / 16)) + WIDTH / 16;
-        int rightOceanmin = (int) (BIOME_RNG.nextDouble(WIDTH / 16)) + WIDTH * 7 / 8;
+        int leftOceanmax = (int) (BIOME_RNG.nextInt(WIDTH / 16)) + WIDTH / 16;
+        int rightOceanmin = (int) (BIOME_RNG.nextInt(WIDTH / 16)) + WIDTH * 7 / 8;
 
         // initialize and add oceans
         for (int i = 0; i < WIDTH; i++) {

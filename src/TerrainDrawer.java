@@ -1,12 +1,19 @@
+
 import java.awt.Color;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.*;
 
+import util.*;
+import util.block.FaunaTile;
+import util.block.Tile;
+
 public class TerrainDrawer {
     private BufferedImage terrainImage;
     private int[][] GRASS;
     private int[][] DIRT;
+    private int[][] SAND;
+    private int[][] GRAVEL;
     private int[][] COBBLESTONE;
     private int[][] MARBLE;
     private int[][] GRANITE;
@@ -15,9 +22,11 @@ public class TerrainDrawer {
     private int[][] LIMESTONE;
     private int[][] BASALT;
     private int[][] PUMICE;
+    private int[][] WATER;
     private int[][] CAVE;
     private int[][] SKY;
     private int[][] OAK_TREE;
+    private int[][] PALM_TREE;
 
     public TerrainDrawer(BufferedImage terrainImage) {
         this.terrainImage = terrainImage;
@@ -33,6 +42,15 @@ public class TerrainDrawer {
                 break;
             case DIRT:
                 blockColors = DIRT;
+                break;
+            case SAND:
+                blockColors = SAND;
+                break;
+            case GRAVEL:
+                blockColors = GRAVEL;
+                break;
+            case WATER:
+                blockColors = WATER;
                 break;
             case CAVE:
                 blockColors = CAVE;
@@ -66,6 +84,9 @@ public class TerrainDrawer {
                 break;
             case OAK_TREE:
                 blockColors = OAK_TREE;
+                break;
+            case PALM_TREE:
+                blockColors = PALM_TREE;
                 break;
             default:
                 return;
@@ -155,6 +176,8 @@ public class TerrainDrawer {
         try {
             GRASS = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/grass.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             DIRT = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/dirt.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
+            SAND = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/sand.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
+            GRAVEL = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/gravel.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             COBBLESTONE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/cobblestone.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             MARBLE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/marble.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             GRANITE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/granite.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
@@ -163,9 +186,11 @@ public class TerrainDrawer {
             LIMESTONE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/limestone.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             BASALT = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/basalt.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             PUMICE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/pumice.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
+            WATER = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/water.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             CAVE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/cave.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             SKY = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/sky.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             OAK_TREE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/oak_tree.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
+            PALM_TREE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/palm_tree.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
         } catch (IOException e) {
             e.printStackTrace();
         }

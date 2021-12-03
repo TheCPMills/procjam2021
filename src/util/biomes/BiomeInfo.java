@@ -1,5 +1,7 @@
-package biomes;
+package util.biomes;
 import java.util.Random;
+import util.*;
+import util.block.Block;
 
 public class BiomeInfo {
     private Random RNG;
@@ -35,12 +37,12 @@ public class BiomeInfo {
         return (primaryHeight - secondaryHeight) * trigonometricProportion + secondaryHeight;
     }
 
-    public int getLush() {
+    public Block getLush() {
         float randomVal = (float) RNG.nextFloat();
         return primaryBiome.getLush(randomVal, proportion, secondaryBiome);
     }
 
-    public int getSoil() {
+    public Block getSoil() {
         float randomVal = (float) RNG.nextFloat();
         return primaryBiome.getSoil(randomVal, proportion, secondaryBiome);
     }

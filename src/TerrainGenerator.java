@@ -1,8 +1,14 @@
 import java.awt.image.*;
 import javax.imageio.*;
+
 import javanoise.noise.*;
 import javanoise.noise.fractal.*;
 import javanoise.random.*;
+import util.FloraGenerator;
+import util.ImageProcessing;
+import util.biomes.*;
+import util.block.*;
+
 import java.awt.*;
 import java.io.*;
 import java.util.*;
@@ -33,7 +39,7 @@ public class TerrainGenerator {
     private static ArrayList<Integer> LUSH_LOCATIONS = new ArrayList<Integer>();
     private static ArrayList<Integer> SOIL_LOCATIONS = new ArrayList<Integer>();
     private static ArrayList<Integer> MINERAL_LOCATIONS = new ArrayList<Integer>();
-    private static ArrayList<BiomeInfo> biomes = new ArrayList<BiomeInfo>();
+    private static ArrayList<BiomeInfo> BIOMES = new ArrayList<BiomeInfo>();
 
     // ==========================================================================================
 
@@ -79,11 +85,13 @@ public class TerrainGenerator {
         double soilReference = lushReference / lushToSoilRatio;
         double mineralReference = soilReference / soilToMineralRatio;
 
+        double seaLevel = lushReference * 1.05;
+
         // Generate Biome values
-        biomes = BIOME_GENERATOR.generateBiomes();
+        BIOMES = BIOME_GENERATOR.generateBiomes();
 
         for (int i = 0; i < WIDTH; i++) {
-            double baseHeight = biomes.get(i).getBiomeHeight((float) lushReference, (float) lushReference / 2);
+            double baseHeight = BIOMES.get(i).getBiomeHeight((float) lushReference, (float) lushReference / 2);
             double baseSoil = baseHeight + soilReference - lushReference;
             double baseUnderground = baseSoil + mineralReference - soilReference;
 
@@ -104,9 +112,11 @@ public class TerrainGenerator {
                 if (j >= mineralLocation) {
                     generateMinerals(i, j);
                 } else if (j >= soilLocation && j < mineralLocation) {
-                    TERRAIN_DATA[i][j] = new ElementalTile(Block.DIRT);
+                    TERRAIN_DATA[i][j] = new ElementalTile(BIOMES.get(i).getSoil());
                 } else if (j >= lushLocation && j < soilLocation) {
-                    TERRAIN_DATA[i][j] = new ElementalTile(Block.GRASS);
+                    TERRAIN_DATA[i][j] = new ElementalTile(BIOMES.get(i).getLush());
+                } else if (j >= seaLevel && j < lushLocation) {
+                    TERRAIN_DATA[i][j] = new ElementalTile(Block.WATER);
                 } else if (j < lushLocation) {
                     TERRAIN_DATA[i][j] = new ElementalTile(Block.SKY);
                 }

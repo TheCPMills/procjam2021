@@ -1,15 +1,18 @@
-package biomes;
+package util.biomes;
+import util.*;
+import util.block.Block;
+
 public abstract class Biome {
 
-    public abstract int getLush();
+    public abstract Block getLush();
 
-    public abstract int getSoil();
+    public abstract Block getSoil();
 
-    public int getLush(float randomVal, float proportion, Biome secondaryBiome) {
+    public Block getLush(float randomVal, float proportion, Biome secondaryBiome) {
         return getLush(randomVal < proportion, secondaryBiome);
     }
 
-    public int getLush(Boolean isPrimary, Biome secondaryBiome) {
+    public Block getLush(Boolean isPrimary, Biome secondaryBiome) {
         if (secondaryBiome == null || isPrimary) {
             return getLush();
         } else {
@@ -17,11 +20,11 @@ public abstract class Biome {
         }
     }
 
-    public int getSoil(float randomVal, float proportion, Biome secondaryBiome) {
+    public Block getSoil(float randomVal, float proportion, Biome secondaryBiome) {
         return getSoil(randomVal < proportion, secondaryBiome);
     }
 
-    public int getSoil(Boolean isPrimary, Biome secondaryBiome) {
+    public Block getSoil(Boolean isPrimary, Biome secondaryBiome) {
         if (secondaryBiome == null || isPrimary) {
             return getSoil();
         } else {

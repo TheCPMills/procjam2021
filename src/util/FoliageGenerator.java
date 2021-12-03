@@ -1,13 +1,14 @@
+package util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
+
 import java.awt.Color;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
-public class FloraGen {
+public class FoliageGenerator {
     public static void generate(int x, int y, boolean flipped, BufferedImage img) throws IOException {
         int[][] blockColors = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/oak_tree.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
 
@@ -31,7 +32,7 @@ public class FloraGen {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        File outputFile = new File("assets/FloraTest.png");
+        File outputFile = new File("assets/FoliageTest.png");
         try {
             ImageIO.write(img, "png", outputFile);
         } catch (IOException e) {

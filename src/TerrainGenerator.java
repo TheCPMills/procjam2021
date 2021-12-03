@@ -112,69 +112,6 @@ public class TerrainGenerator {
     // private static int FLINT = 0;
     // private static int SLATE = 0;
 
-    // Background Colors
-    private static int SKY = 0xff9bd1ff;
-    private static int CLOUD = 0xffdfffff;
-    private static int LAVA = 0xff8a4926;
-    private static int CAVE = 0xff121223;
-
-    /*******************************************
-     ***************** METHODS *****************
-     *******************************************/
-    public static void generate(int seed, int width, int height, double heightVariation) {
-        try {
-            init(seed, width, height, heightVariation);
-            TERRAIN_IMAGE = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-
-            // Initialize reference points
-
-            double lushToSoilRatio = 1.25;
-            double soilToMineralRatio = 0.75;
-
-            double lushReference = (HEIGHT * 0.35);
-            double soilReference = lushReference / lushToSoilRatio;
-            double mineralReference = soilReference / soilToMineralRatio;
-
-            double seaLevel = lushReference * 1.05;
-
-            // Generate Biome values
-            biomes = generateBiomes();
-
-            // Generate terrain shape
-            for (int i = 0; i < WIDTH; i++) {
-                double baseHeight = biomes.get(i).getBiomeHeight((float) lushReference, (float) lushReference / 2);
-                double baseSoil = baseHeight + soilReference - lushReference;
-                double baseUnderground = baseSoil + mineralReference - soilReference;
-                int lushLocation = (int) (baseHeight + (int) ((((0x010101 * (int) ((LUSH_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / (HEIGHT_VARIATION * 1.5)) + 0.5) - ((int) (128 / HEIGHT_VARIATION)));
-                int soilLocation = (int) (baseSoil + (int) ((((0x010101 * (int) ((SOIL_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / (HEIGHT_VARIATION)) + 0.5) - ((int) (196 / HEIGHT_VARIATION)));
-                if (soilLocation < lushLocation) {
-                    soilLocation = (int) (lushLocation * 1.005 + 1);
-                }
-                int mineralLocation = (int) (baseUnderground + (int) ((((0x010101 * (int) ((MINERAL_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION * 1.5) + 0.5) - ((int) (256 / HEIGHT_VARIATION)));
-                LUSH_LOCATIONS.add(lushLocation);
-                SOIL_LOCATIONS.add(soilLocation);
-                MINERAL_LOCATIONS.add(mineralLocation);
-                for (int j = 0; j < HEIGHT; j++) {
-                    if (j >= mineralLocation) {
-                        generateMinerals(i, j);
-                    } else if (j >= soilLocation && j < mineralLocation) {
-                        TERRAIN_IMAGE.setRGB(i, j, biomes.get(i).getSoilColor());
-                    } else if (j >= lushLocation && j < soilLocation) {
-                        TERRAIN_IMAGE.setRGB(i, j, biomes.get(i).getLushColor());
-                    } else if (j >= seaLevel && j < lushLocation) {
-                        TERRAIN_IMAGE.setRGB(i, j, WATER);
-                    } else if (j < lushLocation) {
-                        TERRAIN_IMAGE.setRGB(i, j, SKY);
-                    }
-                }
-            }
-
-            // Generate cave shape
-            generateCaverns();
-        }
-
-    // ==========================================================================================
-
     private static void initialize(int seed, int width, int height, double heightVariation) {
         WIDTH = width;
         HEIGHT = height;

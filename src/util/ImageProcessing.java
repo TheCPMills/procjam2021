@@ -1,3 +1,4 @@
+package util;
 import java.io.*;
 import javax.imageio.ImageIO;
 import java.util.*;
@@ -22,7 +23,8 @@ public class ImageProcessing {
 
         for (int column = 0; column < width; column++) {
             for (int row = 0; row < height; row++) {
-                pixelColors[column][row] = new Color(image.getRGB(column, row));
+                int rgb = image.getRGB(column, row);
+                pixelColors[column][row] = new Color(rgb, true);
             }
         }
 
@@ -43,7 +45,7 @@ public class ImageProcessing {
 
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
-                pixelColors.add(new Color(image.getRGB(column, row)));
+                pixelColors.add(new Color(image.getRGB(column, row), true));
             }
         }
 
@@ -64,25 +66,25 @@ public class ImageProcessing {
 
         while (row < height && column < width) {
             for (i = column; i < width; ++i) {
-                pixelColors.add(new Color(image.getRGB(i, row)));
+                pixelColors.add(new Color(image.getRGB(i, row), true));
             }
             row++;
 
             for (i = row; i < height; ++i) {
-                pixelColors.add(new Color(image.getRGB(width - 1, i)));
+                pixelColors.add(new Color(image.getRGB(width - 1, i), true));
             }
             width--;
 
             if (row < height) {
                 for (i = width - 1; i >= column; --i) {
-                    pixelColors.add(new Color(image.getRGB(i, height - 1)));
+                    pixelColors.add(new Color(image.getRGB(i, height - 1), true));
                 }
                 height--;
             }
 
             if (column < width) {
                 for (i = height - 1; i >= row; --i) {
-                    pixelColors.add(new Color(image.getRGB(column, i)));
+                    pixelColors.add(new Color(image.getRGB(column, i), true));
                 }
                 column++;
             }

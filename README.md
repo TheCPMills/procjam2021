@@ -1,18 +1,45 @@
-## Getting Started
+# TGen
+TGen is a Java library for generating terrain.
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Biomes
+|  | Lush Groundcover | Soil | Minerals | Foliage |
+|-----|-----|-----|-----|-----|
+| <b>Tundra<b> | Snow | Snow | Ice | Juniper Savin, Azure Bluet, Winterberry |
+| <b>Taiga<b> | Frosted Grass | Dirt |  | Boreal Tree, Barberry |
+| <b>Alpine<b> | Gravel | Gravel |  | Asphodel, Iris, Bell Flower |
+| <b>Grassland<b> | Temperate Grass | Dirt |  | Switch Grass, Daffodil |
+| <b>Forest<b> | Grass | Dirt |  | Oak Tree, Poppy |
+| <b>Jungle<b> | Tropical Grass | Mud |  | Mahogany Tree, Mushroom |
+| <b>Savnna<b> | Dry Grass | Clay |  | Acacia Tree, Lemon Grass |
+| <b>Desert<b> | Sand | Sand | Sandstone | Cactus, Waterleaf |
+| <b>Aquatic<b> | Water | Sand |  | Palm Tree, Coral |
 
-## Folder Structure
+## Ores and Gems
+ <b>Ores<b>
+- Coal
+- Copper
+- Silver
+- Iron
+- Gold
+- Platinum
+- Cobalt
+- Titanium
+- Palladium
 
-The workspace contains two folders by default, where:
+<b>Gems<b>
+- Diamond
+- Ruby
+- Emerald
+- Quartz
+- Amethyst
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Usage
+```java
+public static void main(String[] args) throws Exception {
+  int seed = 1234567890;
+  int width = 1024; // maximum width supported
+  int height = 256; // maximum height supported
+  double variation = 2.5;
+  TerrainGenerator.generate(seed, width, height, variation);
+}
+```

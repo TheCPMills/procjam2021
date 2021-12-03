@@ -41,6 +41,138 @@ public class TerrainGenerator {
     private static ArrayList<Integer> MINERAL_LOCATIONS = new ArrayList<Integer>();
     private static ArrayList<BiomeInfo> BIOMES = new ArrayList<BiomeInfo>();
 
+    // Grassland/Plains Colors
+    private static int GRASS = 0xff2ac073;
+    private static int DIRT = 0xff976b4b;
+    private static int OAK_WOOD = 0xff996633;
+    private static int OAK_LEAVES = 0xff339933;
+
+    // Jungle/Taiga Colors
+    private static int MOSS = 0xff35501e;
+    private static int MUD = 0xff5c4449;
+    private static int MAHOGANY_WOOD = 0;
+    private static int MAHOGANY_LEAVES = 0;
+
+    // Desert Colors
+    private static int SAND = 0xffbeab5e;
+    private static int CLAY = 0;
+    private static int CACTUS = 0;
+
+    // Tundra Colors
+    private static int SNOW = 0xffd3ecf1;
+    private static int ICE = 0;
+    private static int PINE_WOOD = 0;
+    private static int PINE_LEAVES = 0;
+
+    // Ocean/Water Colors
+    private static int WATER = 0xff0099ff;
+    private static int CORAL = 0;
+    private static int PALM_WOOD = 0;
+    private static int PALM_LEAVES = 0;
+
+    // Ore Colors
+    private static int COAL = 0;
+    private static int COPPER = 0;
+    private static int SIVER = 0;
+    private static int IRON = 0;
+    private static int GOLD = 0;
+    private static int PLATNUM = 0;
+    private static int COBALT = 0;
+    private static int TITANIUM = 0;
+    private static int PALLADIUM = 0;
+
+    // Gem Colors
+    private static int DIAMOND = 0;
+    private static int RUBY = 0;
+    private static int EMERALD = 0;
+    private static int QUARTZ = 0;
+    private static int AMETHYST = 0;
+    // private static int AMBER = 0;
+    // private static int TOPAZ = 0;
+    // private static int SAPPHIRE = 0;
+    // private static int ONYX = 0;
+    // private static int OPAL = 0;
+    // private static int JADE = 0;
+    // private static int GARNET = 0;
+    // private static int LAPIS = 0;
+
+    // Mineral Colors
+    private static int COBBLESTONE = 0xff808080;
+    private static int MARBLE = 0xff858585;
+    private static int GRANITE = 0xff878787;
+    private static int DIORTIE = 0xff66666d;
+    private static int ANDESITE = 0xff79797f;
+    private static int LIMESTONE = 0xff8c8c91;
+    private static int BASALT = 0xff8f8f8f;
+    private static int PUMICE = 0xff7c7c7c;
+    // private static int OBSIDIAN = 0;
+    // private static int GRAVEL = 0;
+    // private static int TUFF = 0;
+    // private static int CALCITE = 0;
+    // private static int FLINT = 0;
+    // private static int SLATE = 0;
+
+    // Background Colors
+    private static int SKY = 0xff9bd1ff;
+    private static int CLOUD = 0xffdfffff;
+    private static int LAVA = 0xff8a4926;
+    private static int CAVE = 0xff121223;
+
+    /*******************************************
+     ***************** METHODS *****************
+     *******************************************/
+    public static void generate(int seed, int width, int height, double heightVariation) {
+        try {
+            init(seed, width, height, heightVariation);
+            TERRAIN_IMAGE = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+
+            // Initialize reference points
+
+            double lushToSoilRatio = 1.25;
+            double soilToMineralRatio = 0.75;
+
+            double lushReference = (HEIGHT * 0.35);
+            double soilReference = lushReference / lushToSoilRatio;
+            double mineralReference = soilReference / soilToMineralRatio;
+
+            double seaLevel = lushReference * 1.05;
+
+            // Generate Biome values
+            biomes = generateBiomes();
+
+            // Generate terrain shape
+            for (int i = 0; i < WIDTH; i++) {
+                double baseHeight = biomes.get(i).getBiomeHeight((float) lushReference, (float) lushReference / 2);
+                double baseSoil = baseHeight + soilReference - lushReference;
+                double baseUnderground = baseSoil + mineralReference - soilReference;
+                int lushLocation = (int) (baseHeight + (int) ((((0x010101 * (int) ((LUSH_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / (HEIGHT_VARIATION * 1.5)) + 0.5) - ((int) (128 / HEIGHT_VARIATION)));
+                int soilLocation = (int) (baseSoil + (int) ((((0x010101 * (int) ((SOIL_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / (HEIGHT_VARIATION)) + 0.5) - ((int) (196 / HEIGHT_VARIATION)));
+                if (soilLocation < lushLocation) {
+                    soilLocation = (int) (lushLocation * 1.005 + 1);
+                }
+                int mineralLocation = (int) (baseUnderground + (int) ((((0x010101 * (int) ((MINERAL_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION * 1.5) + 0.5) - ((int) (256 / HEIGHT_VARIATION)));
+                LUSH_LOCATIONS.add(lushLocation);
+                SOIL_LOCATIONS.add(soilLocation);
+                MINERAL_LOCATIONS.add(mineralLocation);
+                for (int j = 0; j < HEIGHT; j++) {
+                    if (j >= mineralLocation) {
+                        generateMinerals(i, j);
+                    } else if (j >= soilLocation && j < mineralLocation) {
+                        TERRAIN_IMAGE.setRGB(i, j, biomes.get(i).getSoilColor());
+                    } else if (j >= lushLocation && j < soilLocation) {
+                        TERRAIN_IMAGE.setRGB(i, j, biomes.get(i).getLushColor());
+                    } else if (j >= seaLevel && j < lushLocation) {
+                        TERRAIN_IMAGE.setRGB(i, j, WATER);
+                    } else if (j < lushLocation) {
+                        TERRAIN_IMAGE.setRGB(i, j, SKY);
+                    }
+                }
+            }
+
+            // Generate cave shape
+            generateCaverns();
+        }
+
     // ==========================================================================================
 
     private static void initialize(int seed, int width, int height, double heightVariation) {
@@ -87,7 +219,7 @@ public class TerrainGenerator {
 
         double seaLevel = lushReference * 1.05;
 
-        // Generate Biome values
+        // Generate biomes
         BIOMES = BIOME_GENERATOR.generateBiomes();
 
         for (int i = 0; i < WIDTH; i++) {

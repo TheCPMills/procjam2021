@@ -5,12 +5,10 @@ import java.util.Random;
 
 public class BiomeGenerator {
     private int WIDTH;
-    private int HEIGHT;
     private Random BIOME_RNG;
 
-    public BiomeGenerator(int width, int height, int seed) {
+    public BiomeGenerator(int width, int seed) {
         WIDTH = width;
-        HEIGHT = height;
         BIOME_RNG = new Random(seed);
     }
 

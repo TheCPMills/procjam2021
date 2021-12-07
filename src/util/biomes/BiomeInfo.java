@@ -1,6 +1,5 @@
 package util.biomes;
 import java.util.Random;
-import util.*;
 import util.block.Block;
 
 public class BiomeInfo {

@@ -1,22 +1,22 @@
 package util.block;
 
-public class FaunaTile extends Tile {
+public class FloraTile extends Tile {
     boolean direction;
     TileAlignment alignment;
 
-    public FaunaTile(Block block, boolean direction) {
+    public FloraTile(Block block, boolean direction) {
         super(block);
         this.direction = direction;
         this.alignment = TileAlignment.LEFT_SUB;
     }
 
-    public FaunaTile(Block block, TileAlignment alignment) {
+    public FloraTile(Block block, TileAlignment alignment) {
         super(block);
         this.direction = false;
         this.alignment = alignment;
     }
 
-    public FaunaTile(Block block, boolean direction, TileAlignment alignment) {
+    public FloraTile(Block block, boolean direction, TileAlignment alignment) {
         super(block);
         this.direction = direction;
         this.alignment = alignment;

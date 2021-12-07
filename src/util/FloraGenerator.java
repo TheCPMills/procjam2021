@@ -1,7 +1,7 @@
 package util;
 import javanoise.random.*;
 import util.block.Block;
-import util.block.FaunaTile;
+import util.block.FloraTile;
 import util.block.Tile;
 import util.block.TileAlignment;
 
@@ -9,12 +9,10 @@ import java.util.*;
 
 public class FloraGenerator {
     private int WIDTH;
-    private int HEIGHT;
     private RNG FLORA_RNG;
 
-    public FloraGenerator(int width, int height, int seed) {
+    public FloraGenerator(int width, int seed) {
         WIDTH = width;
-        HEIGHT = height;
         FLORA_RNG = new LCG(seed);
     }
 
@@ -57,14 +55,14 @@ public class FloraGenerator {
                 break;
         }
 
-        terrainData[x][y - 3] = new FaunaTile(block, flipped == 1, TileAlignment.LEFT_SUPER);
-        terrainData[x][y - 2] = new FaunaTile(block, flipped == 1, TileAlignment.LEFT_MID);
-        terrainData[x][y - 1] = new FaunaTile(block, flipped == 1, TileAlignment.LEFT_BASE);
-        terrainData[x][y] = new FaunaTile(block, flipped == 1, TileAlignment.LEFT_SUB);
+        terrainData[x][y - 3] = new FloraTile(block, flipped == 1, TileAlignment.LEFT_SUPER);
+        terrainData[x][y - 2] = new FloraTile(block, flipped == 1, TileAlignment.LEFT_MID);
+        terrainData[x][y - 1] = new FloraTile(block, flipped == 1, TileAlignment.LEFT_BASE);
+        terrainData[x][y] = new FloraTile(block, flipped == 1, TileAlignment.LEFT_SUB);
 
-        terrainData[x + 1][y - 3] = new FaunaTile(block, flipped == 1, TileAlignment.RIGHT_SUPER);
-        terrainData[x + 1][y - 2] = new FaunaTile(block, flipped == 1, TileAlignment.RIGHT_MID);
-        terrainData[x + 1][y - 1] = new FaunaTile(block, flipped == 1, TileAlignment.RIGHT_BASE);
-        terrainData[x + 1][y] = new FaunaTile(block, flipped == 1, TileAlignment.RIGHT_SUB);
+        terrainData[x + 1][y - 3] = new FloraTile(block, flipped == 1, TileAlignment.RIGHT_SUPER);
+        terrainData[x + 1][y - 2] = new FloraTile(block, flipped == 1, TileAlignment.RIGHT_MID);
+        terrainData[x + 1][y - 1] = new FloraTile(block, flipped == 1, TileAlignment.RIGHT_BASE);
+        terrainData[x + 1][y] = new FloraTile(block, flipped == 1, TileAlignment.RIGHT_SUB);
     }
 }

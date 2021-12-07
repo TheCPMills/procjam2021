@@ -3,7 +3,6 @@ import javax.imageio.*;
 
 import javanoise.noise.*;
 import javanoise.noise.fractal.*;
-import javanoise.random.*;
 import util.FloraGenerator;
 import util.ImageProcessing;
 import util.biomes.*;
@@ -125,8 +124,8 @@ public class TerrainGenerator {
         SOIL_NOISE = new Simplex((int) (seed));
         MINERAL_NOISE = new RigidMultiFractal(seed);
 
-        FLORA_GENERATOR = new FloraGenerator(WIDTH, HEIGHT, seed);
-        BIOME_GENERATOR = new BiomeGenerator(WIDTH, HEIGHT, seed);
+        FLORA_GENERATOR = new FloraGenerator(WIDTH, seed);
+        BIOME_GENERATOR = new BiomeGenerator(WIDTH, seed);
 
         double low = -0.025;
         double high = 0.025;

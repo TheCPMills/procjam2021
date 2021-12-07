@@ -1,5 +1,4 @@
 package util.biomes;
-import util.*;
 import util.block.Block;
 
 public final class Mountain extends Biome {

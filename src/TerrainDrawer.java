@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.*;
 
 import util.*;
-import util.block.FaunaTile;
+import util.block.FloraTile;
 import util.block.Tile;
 
 public class TerrainDrawer {
@@ -96,7 +96,7 @@ public class TerrainDrawer {
             y += 31;
             int i, j, xLimit, yLimit;
 
-            switch (((FaunaTile) (tile)).alignment()) {
+            switch (((FloraTile) (tile)).alignment()) {
                 default:
                 case LEFT_SUPER:
                     i = 0;
@@ -148,7 +148,7 @@ public class TerrainDrawer {
                     break;
             }
 
-            int direction = Boolean.compare(((FaunaTile) (tile)).direction(), false);
+            int direction = Boolean.compare(((FloraTile) (tile)).direction(), false);
 
             for (; i < xLimit; i++) {
                 for (; j < yLimit; j++) {

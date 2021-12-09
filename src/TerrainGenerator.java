@@ -3,8 +3,7 @@ import javax.imageio.*;
 
 import javanoise.noise.*;
 import javanoise.noise.fractal.*;
-import util.FloraGenerator;
-import util.ImageProcessing;
+import util.*;
 import util.biomes.*;
 import util.block.*;
 
@@ -24,6 +23,7 @@ public class TerrainGenerator {
     // Features RNGs
     private static BiomeGenerator BIOME_GENERATOR;
     private static FloraGenerator FLORA_GENERATOR;
+    private static StructureGenerator STRUCTURE_GENERATOR;
     private static TerrainDrawer TERRAIN_DRAWER;
 
     // Terrain Noise
@@ -126,6 +126,7 @@ public class TerrainGenerator {
 
         FLORA_GENERATOR = new FloraGenerator(WIDTH, seed);
         BIOME_GENERATOR = new BiomeGenerator(WIDTH, seed);
+        STRUCTURE_GENERATOR = new StructureGenerator(TERRAIN_DATA, WIDTH, HEIGHT, seed);
 
         double low = -0.025;
         double high = 0.025;
@@ -193,6 +194,9 @@ public class TerrainGenerator {
 
         // Generate cave shape
         generateCaverns();
+
+        // Generate dungeon
+        STRUCTURE_GENERATOR.generateDungeon();
 
         // Generate trees
         FLORA_GENERATOR.addTrees(TERRAIN_DATA, LUSH_LOCATIONS);

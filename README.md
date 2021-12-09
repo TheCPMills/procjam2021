@@ -24,7 +24,7 @@ TGen is a Java library for generating terrain.
 - Tuff
 
 ## Ores and Gems
- <b>Ores<b>
+ <b>Ores</b>
 - Coal
 - Copper
 - Silver
@@ -35,7 +35,7 @@ TGen is a Java library for generating terrain.
 - Titanium
 - Palladium
 
-<b>Gems<b>
+<b>Gems</b>
 - Diamond
 - Ruby
 - Emerald

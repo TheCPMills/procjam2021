@@ -10,7 +10,7 @@ TGen is a Java library for generating terrain.
 | <b>Grassland<b> | Temperate Grass | Dirt | Marble | Switch Grass, Daffodil |
 | <b>Forest<b> | Grass | Dirt | Cobblestone | Oak Tree, Poppy |
 | <b>Jungle<b> | Tropical Grass | Mud | Mossy Cobblestone | Mahogany Tree, Mushroom |
-| <b>Savnna<b> | Dry Grass | Clay | Granite | Acacia Tree, Lemon Grass |
+| <b>Savanna<b> | Dry Grass | Clay | Granite | Acacia Tree, Lemon Grass |
 | <b>Desert<b> | Sand | Sand | Sandstone | Cactus, Waterleaf |
 | <b>Aquatic<b> | Water | Sand | Limestone | Palm Tree, Coral |
 

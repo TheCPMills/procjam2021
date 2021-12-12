@@ -19,4 +19,12 @@ public final class Forest extends Biome {
     public Block getSoil() {
         return Block.DIRT;
     }
+
+    public Block getMineral() {
+        return Block.COBBLESTONE;
+    }
+
+    public BiomeType getBiomeType() {
+        return BiomeType.FOREST;
+    }
 }

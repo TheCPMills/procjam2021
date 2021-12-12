@@ -23,17 +23,21 @@ public class BiomeInfo {
     }
 
     public double getBiomeHeight(float baseHeight, float maxDeviation) {
-        float primaryHeight = baseHeight;
-        float secondaryHeight = baseHeight;
+        if (primaryBiome.getBiomeType() == BiomeType.ALPINE || primaryBiome.getBiomeType() == BiomeType.LEFT_AQUATIC || primaryBiome.getBiomeType() == BiomeType.RIGHT_AQUATIC) {
+            float primaryHeight = baseHeight;
+            float secondaryHeight = baseHeight;
 
-        primaryHeight += primaryBiome.getHeight() * maxDeviation;
-        if (secondaryBiome != null) {
-            secondaryHeight += secondaryBiome.getHeight() * maxDeviation;
+            primaryHeight += primaryBiome.getHeight() * maxDeviation;
+            if (secondaryBiome != null) {
+                secondaryHeight += secondaryBiome.getHeight() * maxDeviation;
+            }
+            // still 0 to 1, but smoothed
+            float trigonometricProportion = -0.5f * (float) Math.cos(proportion * Math.PI) + 0.5f;
+
+            return (primaryHeight - secondaryHeight) * trigonometricProportion + secondaryHeight;
+        } else {
+            return baseHeight;
         }
-        // still 0 to 1, but smoothed
-        float trigonometricProportion = -0.5f * (float) Math.cos(proportion * Math.PI) + 0.5f;
-
-        return (primaryHeight - secondaryHeight) * trigonometricProportion + secondaryHeight;
     }
 
     public Block getLush() {
@@ -44,5 +48,10 @@ public class BiomeInfo {
     public Block getSoil() {
         float randomVal = (float) RNG.nextFloat();
         return primaryBiome.getSoil(randomVal, proportion, secondaryBiome);
+    }
+
+    public Block getMineral() {
+        float randomVal = (float) RNG.nextFloat();
+        return primaryBiome.getMineral(randomVal, proportion, secondaryBiome);
     }
 }

@@ -1,12 +1,12 @@
 package util.biomes;
 import util.block.Block;
 
-public final class Ocean extends Biome {
-    private static Ocean INSTANCE;
+public final class LeftOcean extends Biome {
+    private static LeftOcean INSTANCE;
 
-    public static Ocean getInstance() {
+    public static LeftOcean getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new Ocean();
+            INSTANCE = new LeftOcean();
         }
 
         return INSTANCE;
@@ -28,8 +28,20 @@ public final class Ocean extends Biome {
         return getSoil(randomVal < Math.min(0.95, proportion * 5), secondaryBiome);
     }
 
+    public Block getMineral() {
+        return Block.LIMESTONE;
+    }
+
+    public Block getMineral(float randomVal, float proportion, Biome secondaryBiome) {
+        return getMineral(randomVal < Math.min(0.95, proportion * 5), secondaryBiome);
+    }
+
     @Override
     public float getHeight() {
         return 1;
+    }
+
+    public BiomeType getBiomeType() {
+        return BiomeType.LEFT_AQUATIC;
     }
 }

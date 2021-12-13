@@ -48,7 +48,7 @@ public class TerrainGenerator {
         
         LUSH_NOISE = new Simplex(seed);
         SOIL_NOISE = new Simplex((int) (seed));
-        MINERAL_NOISE = new Simplex(seed, 0.0025);
+        MINERAL_NOISE = new Simplex(seed, 0.00375);
 
         BIOME_GENERATOR = new BiomeGenerator(WIDTH, seed);
         FLORA_GENERATOR = new FloraGenerator(WIDTH, seed, BIOME_GENERATOR);
@@ -96,7 +96,7 @@ public class TerrainGenerator {
                 soilLocation = (int) (lushLocation * 1.005 + 1);
             }
 
-            int mineralLocation = (int) (baseUnderground + (int) ((((0x010101 * (int) ((MINERAL_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION * 1.5) + 0.5) - ((int) (256 / HEIGHT_VARIATION)));
+            int mineralLocation = (int) ((baseUnderground + (int) ((((0x010101 * (int) ((MINERAL_NOISE.getNoise(i, 0) + 1) * 127.5) & 0x00ff0000) >> 16) / HEIGHT_VARIATION * 1.5) + 0.5) - ((int) (256 / HEIGHT_VARIATION))) - 12.5);
         
             LUSH_LOCATIONS.add(lushLocation);
             SOIL_LOCATIONS.add(soilLocation);

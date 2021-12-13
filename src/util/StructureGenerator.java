@@ -77,7 +77,7 @@ public class StructureGenerator {
                 // if wall placement doesn't block a door
                 if (map[x + i][y].block() == Block.COBBLESTONE && map[x + i][y + height - 1].block() == Block.COBBLESTONE) {
                     // get random door placement along wall
-                    int doorPlacement = STRUCTURE_RNG.nextInt(2, height - 2);
+                    int doorPlacement = STRUCTURE_RNG.nextInt(1, height - 1);
                     // place wall
                     for(int j = 1; j < height - 1; j++)
                     {
@@ -108,7 +108,7 @@ public class StructureGenerator {
                 // if wall placement doesn't block a door
                 if (map[x][y + j].block() == Block.COBBLESTONE && map[x + width - 1][y + j].block() == Block.COBBLESTONE) {
                     // get random door placement along wall
-                    int doorPlacement = STRUCTURE_RNG.nextInt(2, width - 2);
+                    int doorPlacement = STRUCTURE_RNG.nextInt(1, width - 1);
                     // place wall
                     for(int i = 1; i < width - 1; i++)
                     {

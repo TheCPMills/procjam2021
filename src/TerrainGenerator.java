@@ -73,7 +73,7 @@ public class TerrainGenerator {
 
         // Initialize reference points
         double lushToSoilRatio = 1.25;
-        double soilToMineralRatio = 0.425;
+        double soilToMineralRatio = 0.45;
 
         double lushReference = (HEIGHT * 0.35);
         double soilReference = lushReference / lushToSoilRatio;

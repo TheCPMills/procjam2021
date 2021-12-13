@@ -20,8 +20,16 @@ public final class Mountain extends Biome {
         return Block.GRAVEL;
     }
 
+    public Block getMineral() {
+        return Block.ANDESITE;
+    }
+
     @Override
     public float getHeight() {
         return -1;
+    }
+
+    public BiomeType getBiomeType() {
+        return BiomeType.ALPINE;
     }
 }

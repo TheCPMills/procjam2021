@@ -212,6 +212,7 @@ public class TerrainGenerator {
             }
         }
         File file = new File("assets/2DTerrain.png");
+        file.getParentFile().mkdirs();
         try {
             ImageIO.write(TERRAIN_IMAGE, "png", file);
         } catch (IOException e) {

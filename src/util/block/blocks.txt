@@ -1,0 +1,70 @@
+// Grassland/Plains Colors
+    private static int GRASS = 0xff2ac073;
+    private static int DIRT = 0xff976b4b;
+    private static int OAK_WOOD = 0xff996633;
+    private static int OAK_LEAVES = 0xff339933;
+
+    // Jungle/Taiga Colors
+    private static int MOSS = 0xff35501e;
+    private static int MUD = 0xff5c4449;
+    private static int MAHOGANY_WOOD = 0;
+    private static int MAHOGANY_LEAVES = 0;
+
+    // Desert Colors
+    private static int SAND = 0xffbeab5e;
+    private static int CLAY = 0;
+    private static int CACTUS = 0;
+
+    // Tundra Colors
+    private static int SNOW = 0xffd3ecf1;
+    private static int ICE = 0;
+    private static int PINE_WOOD = 0;
+    private static int PINE_LEAVES = 0;
+
+    // Ocean/Water Colors
+    private static int WATER = 0xff0099ff;
+    private static int CORAL = 0;
+    private static int PALM_WOOD = 0;
+    private static int PALM_LEAVES = 0;
+
+    // Ore Colors
+    private static int COAL = 0;
+    private static int COPPER = 0;
+    private static int SIVER = 0;
+    private static int IRON = 0;
+    private static int GOLD = 0;
+    private static int PLATNUM = 0;
+    private static int COBALT = 0;
+    private static int TITANIUM = 0;
+    private static int PALLADIUM = 0;
+
+    // Gem Colors
+    private static int DIAMOND = 0;
+    private static int RUBY = 0;
+    private static int EMERALD = 0;
+    private static int QUARTZ = 0;
+    private static int AMETHYST = 0;
+    // private static int AMBER = 0;
+    // private static int TOPAZ = 0;
+    // private static int SAPPHIRE = 0;
+    // private static int ONYX = 0;
+    // private static int OPAL = 0;
+    // private static int JADE = 0;
+    // private static int GARNET = 0;
+    // private static int LAPIS = 0;
+
+    // Mineral Colors
+    private static int COBBLESTONE = 0xff808080;
+    private static int MARBLE = 0xff858585;
+    private static int GRANITE = 0xff878787;
+    private static int DIORTIE = 0xff66666d;
+    private static int ANDESITE = 0xff79797f;
+    private static int LIMESTONE = 0xff8c8c91;
+    private static int BASALT = 0xff8f8f8f;
+    private static int PUMICE = 0xff7c7c7c;
+    // private static int OBSIDIAN = 0;
+    // private static int GRAVEL = 0;
+    // private static int TUFF = 0;
+    // private static int CALCITE = 0;
+    // private static int FLINT = 0;
+    // private static int SLATE = 0;

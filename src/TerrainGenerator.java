@@ -260,7 +260,7 @@ public class TerrainGenerator {
         int[][] pixelColors = Arrays.stream(CAVE_REFERENCE).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
         for (int col = 0; col < WIDTH; col++) {
             for (int row = 0; row < HEIGHT; row++) {
-                if (pixelColors[col][row] == 0xFFFFFFFF && LUSH_LOCATIONS.get(col) <= row) {
+                if (pixelColors[col][row] == 0xFFFFFFFF && (LUSH_LOCATIONS.get(col) <= row || MINERAL_LOCATIONS.get(col) <= row)) {
                     TERRAIN_DATA[col][row] = new ElementalTile(Block.CAVE);
                 }
             }

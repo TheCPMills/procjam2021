@@ -1,5 +1,6 @@
 # TGen
 By Ryan Stebe and Chase Miller <br />
+https://thecpmills.itch.io/tgen <br />
 TGen is a Java library for generating terrain.
 
 ## Biomes
@@ -53,3 +54,12 @@ public static void main(String[] args) throws Exception {
   TerrainGenerator.generate(seed, width, height, variation);
 }
 ```
+ 
+## Screenshots
+[Seed: 1234567890](https://imgur.com/RI4mgSY) <br />
+[Seed: 10284941](https://imgur.com/4XkRIOH) <br />
+[Seed: 987654321](https://imgur.com/4AGeIOg) <br />
+[Seed: 44162127](https://imgur.com/Qv7Z0uo)
+
+## Resources
+- [javanoise1-1.jar](https://github.com/TheCPMills/NoiseAndProceduralGeneration)

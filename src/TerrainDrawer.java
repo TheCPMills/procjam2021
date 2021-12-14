@@ -39,6 +39,7 @@ public class TerrainDrawer {
     private int[][] SLATE;
     private int[][] BIOTITE;
     private int[][] TUFF;
+    private int[][] OBSIDIAN;
     private int[][] JUNIPER_SAVIN;
     private int[][] AZURE_BLUET;
     private int[][] WINTERBERRY;
@@ -168,6 +169,9 @@ public class TerrainDrawer {
                 break;
             case TUFF:
                 blockColors = TUFF;
+                break;
+            case OBSIDIAN:
+                blockColors = OBSIDIAN;
                 break;
             case JUNIPER_SAVIN:
                 blockColors = JUNIPER_SAVIN;
@@ -391,6 +395,7 @@ public class TerrainDrawer {
             SLATE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/slate.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             BIOTITE = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/biotite.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             TUFF = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/tuff.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
+            OBSIDIAN = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/obsidian.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             JUNIPER_SAVIN = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/juniper_savin.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             AZURE_BLUET = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/azure_bluet.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);
             WINTERBERRY = Arrays.stream(ImageProcessing.arrayPixels("assets/textures/winterberry.png")).map(row -> Arrays.stream(row).mapToInt(Color::getRGB).toArray()).toArray(int[][]::new);

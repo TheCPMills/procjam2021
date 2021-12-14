@@ -1,10 +1,7 @@
 package util;
 
-import java.util.Random;
-
-import util.block.Block;
-import util.block.ElementalTile;
-import util.block.Tile;
+import java.util.*;
+import util.block.*;
 
 public class StructureGenerator {
 
@@ -34,12 +31,12 @@ public class StructureGenerator {
 
         //initial walls
         for(int i = 0; i < dungeonWidth; i++) {
-            map[i + dungeonOriginX][dungeonOriginY] = new ElementalTile(Block.COBBLESTONE);
-            map[i + dungeonOriginX][dungeonOriginY + dungeonHeight - 1] = new ElementalTile(Block.COBBLESTONE);
+            map[i + dungeonOriginX][dungeonOriginY] = new ElementalTile(Block.OBSIDIAN);
+            map[i + dungeonOriginX][dungeonOriginY + dungeonHeight - 1] = new ElementalTile(Block.OBSIDIAN);
         }
         for(int j = 1; j < dungeonHeight - 1; j++) {
-            map[dungeonOriginX][j + dungeonOriginY] = new ElementalTile(Block.COBBLESTONE);
-            map[dungeonOriginX + dungeonWidth - 1][j + dungeonOriginY] = new ElementalTile(Block.COBBLESTONE);
+            map[dungeonOriginX][j + dungeonOriginY] = new ElementalTile(Block.OBSIDIAN);
+            map[dungeonOriginX + dungeonWidth - 1][j + dungeonOriginY] = new ElementalTile(Block.OBSIDIAN);
         }
 
         //initial Room
@@ -75,14 +72,14 @@ public class StructureGenerator {
                 // get random value for wall placement
                 int i = STRUCTURE_RNG.nextInt(4, width - 4);
                 // if wall placement doesn't block a door
-                if (map[x + i][y].block() == Block.COBBLESTONE && map[x + i][y + height - 1].block() == Block.COBBLESTONE) {
+                if (map[x + i][y].block() == Block.OBSIDIAN && map[x + i][y + height - 1].block() == Block.OBSIDIAN) {
                     // get random door placement along wall
                     int doorPlacement = STRUCTURE_RNG.nextInt(1, height - 1);
                     // place wall
                     for(int j = 1; j < height - 1; j++)
                     {
                         if (Math.abs(j - doorPlacement) > 0) {
-                            map[x + i][y + j] = new ElementalTile(Block.COBBLESTONE);
+                            map[x + i][y + j] = new ElementalTile(Block.OBSIDIAN);
                         }
                     }
                     // create sub-rooms
@@ -106,14 +103,14 @@ public class StructureGenerator {
                 // get random value for wall placement
                 int j = STRUCTURE_RNG.nextInt(4, height - 4);
                 // if wall placement doesn't block a door
-                if (map[x][y + j].block() == Block.COBBLESTONE && map[x + width - 1][y + j].block() == Block.COBBLESTONE) {
+                if (map[x][y + j].block() == Block.OBSIDIAN && map[x + width - 1][y + j].block() == Block.OBSIDIAN) {
                     // get random door placement along wall
                     int doorPlacement = STRUCTURE_RNG.nextInt(1, width - 1);
                     // place wall
                     for(int i = 1; i < width - 1; i++)
                     {
                         if (Math.abs(i - doorPlacement) > 0) {
-                            map[x + i][y + j] = new ElementalTile(Block.COBBLESTONE);
+                            map[x + i][y + j] = new ElementalTile(Block.OBSIDIAN);
                         }
                     }
                     // create sub-rooms

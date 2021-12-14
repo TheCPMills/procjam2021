@@ -1,5 +1,5 @@
 package util.biomes;
-import util.block.Block;
+import util.block.*;
 
 public abstract class Biome {
     public abstract Block getLush();
@@ -49,5 +49,4 @@ public abstract class Biome {
     }
 
     public abstract BiomeType getBiomeType();
-
 }

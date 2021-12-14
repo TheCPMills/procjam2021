@@ -1,10 +1,7 @@
 package util;
 import javanoise.random.*;
-import util.biomes.BiomeGenerator;
-import util.block.Block;
-import util.block.FloraTile;
-import util.block.Tile;
-import util.block.TileAlignment;
+import util.biomes.*;
+import util.block.*;
 
 import java.util.*;
 

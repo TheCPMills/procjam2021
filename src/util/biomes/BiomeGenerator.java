@@ -1,5 +1,4 @@
 package util.biomes;
-
 import java.util.*;
 import javanoise.random.*;
 

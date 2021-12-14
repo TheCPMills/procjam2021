@@ -1,4 +1,5 @@
 # TGen
+By Ryan Stebe and Chase Miller
 TGen is a Java library for generating terrain.
 
 ## Biomes

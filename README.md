@@ -62,4 +62,4 @@ public static void main(String[] args) throws Exception {
 [Seed: 44162127](https://imgur.com/Qv7Z0uo)
 
 ## Resources
-- [javanoise1-1.jar](https://github.com/TheCPMills/NoiseAndProceduralGeneration)
+- [javanoise2-0-0.jar](https://github.com/TheCPMills/NoiseAndProceduralGeneration)
